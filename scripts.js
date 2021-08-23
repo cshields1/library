@@ -1,5 +1,9 @@
 let myLibrary = [];
 
+const newBookBtn = document.querySelector("#new-book-btn");
+
+newBookBtn.addEventListener("click", addBookToLibrary);
+
 function Book(title, author, pages, hasBeenRead) {
   this.title = title;
   this.author = author;
@@ -14,10 +18,15 @@ function addBookToLibrary() {
   newBook.pages = +prompt("Number of pages");
   newBook.hasBeenRead = prompt("Has it been read? (yes/no)") === "yes";
   myLibrary.push(newBook);
+  displayBooks();
 }
 
 function displayBooks() {
   const display = document.querySelector("#display");
+
+  while (display.firstChild) {
+    display.firstChild.remove();
+  }
 
   myLibrary.forEach((book) => {
     const card = document.createElement("div");

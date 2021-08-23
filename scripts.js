@@ -1,8 +1,18 @@
 let myLibrary = [];
 
 const newBookBtn = document.querySelector("#new-book-btn");
+const form = document.querySelector("form");
+const cancelBtn = document.querySelector("#cancel-btn");
 
-newBookBtn.addEventListener("click", addBookToLibrary);
+newBookBtn.addEventListener("click", () => {
+  newBookBtn.setAttribute("hidden", "");
+  form.removeAttribute("hidden");
+});
+
+cancelBtn.addEventListener("click", () => {
+  form.setAttribute("hidden", "");
+  newBookBtn.removeAttribute("hidden");
+});
 
 function Book(title, author, pages, hasBeenRead) {
   this.title = title;
@@ -18,6 +28,7 @@ function addBookToLibrary() {
   newBook.pages = +prompt("Number of pages");
   newBook.hasBeenRead = prompt("Has it been read? (yes/no)") === "yes";
   myLibrary.push(newBook);
+  newBook.id = myLibrary.indexOf(newBook);
   displayBooks();
 }
 
@@ -49,7 +60,16 @@ function displayBooks() {
       book.hasBeenRead ? "has been read" : "has not been read"
     }.`;
 
-    cardBody.append(bookAuthor, bookInfo);
+    const bookRemoveBtn = document.createElement("button");
+    bookRemoveBtn.classList.add("btn", "btn-sm", "btn-outline-danger");
+    bookRemoveBtn.addEventListener("click", () => {
+      // find book with this id
+      // remove book
+      // update display
+    });
+    bookRemoveBtn.textContent = "Remove from Library";
+
+    cardBody.append(bookAuthor, bookInfo, bookRemoveBtn);
 
     card.append(cardHeader, cardBody);
 

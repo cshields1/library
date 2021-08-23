@@ -21,48 +21,45 @@
       <div id="display" class="container-fluid mx-auto">
         <!-- books will display here -->
       </div>
-      <form>
-        <div class="mb-3">
-          <label for="new-book-title" class="form-label">Title</label>
-          <input type="text" class="form-control" id="new-book-title" />
-        </div>
-        <div class="mb-3">
-          <label for="new-book-author" class="form-label">Author</label>
-          <input type="text" class="form-control" id="new-book-author" />
-        </div>
-        <div class="mb-3">
-          <label for="new-book-pages" class="form-label">Pages</label>
-          <input type="number" class="form-control" id="new-book-pages" />
-        </div>
-        <div class="mb-3">
-          <div class="form-check-inline">
-            <input
-              type="radio"
-              class="form-check-input"
-              name="hasBeenRead"
-              id="hasBeenRead"
-            />
-            <label for="hasBeenRead" class="form-check-label"
-              >Has been read</label
-            >
-          </div>
-          <div class="form-check-inline">
-            <input
-              type="radio"
-              class="form-check-input"
-              name="hasBeenRead"
-              id="notBeenRead"
-            />
-            <label for="notBeenRead" class="form-check-label"
-              >Has not been read</label
-            >
-          </div>
-        </div>
-      </form>
       <div class="container text-center">
-        <button id="new-book-btn" type="button" class="btn btn-success">
+        <button id="new-book-btn" type="button" class="btn btn-primary">
           Add New Book
         </button>
+      </div>
+      <div id="form-div" class="container">
+        <form hidden>
+          <div class="mb-3">
+            <label for="new-book-title" class="form-label">Title</label>
+            <input type="text" class="form-control" id="new-book-title" />
+          </div>
+          <div class="mb-3">
+            <label for="new-book-author" class="form-label">Author</label>
+            <input type="text" class="form-control" id="new-book-author" />
+          </div>
+          <div class="mb-3">
+            <label for="new-book-pages" class="form-label">Pages</label>
+            <input type="number" class="form-control" id="new-book-pages" />
+          </div>
+          <div class="mb-3">
+            <div class="form-check">
+              <input
+                type="checkbox"
+                class="form-check-input"
+                value="yes"
+                id="hasBeenRead"
+              />
+              <label for="hasBeenRead" class="form-check-label"
+                >Has been read</label
+              >
+            </div>
+          </div>
+          <button type="submit" class="btn btn-success">
+            Add Book to Library
+          </button>
+          <button id="cancel-btn" type="button" class="btn btn-danger">
+            Cancel
+          </button>
+        </form>
       </div>
     </main>
     <footer class="container-fluid mt-3 text-center">

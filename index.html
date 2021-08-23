@@ -14,19 +14,59 @@
     <title>TOP Library</title>
   </head>
   <body>
-    <header class="container-fluid text-center">
+    <header class="container-fluid text-center my-3">
       <h1>What's in My Library?</h1>
     </header>
-    <main class="container-fluid">
-      <div id="display" class="container-fluid mx-auto"></div>
+    <main class="container-fluid my-3">
+      <div id="display" class="container-fluid mx-auto">
+        <!-- books will display here -->
+      </div>
+      <form>
+        <div class="mb-3">
+          <label for="new-book-title" class="form-label">Title</label>
+          <input type="text" class="form-control" id="new-book-title" />
+        </div>
+        <div class="mb-3">
+          <label for="new-book-author" class="form-label">Author</label>
+          <input type="text" class="form-control" id="new-book-author" />
+        </div>
+        <div class="mb-3">
+          <label for="new-book-pages" class="form-label">Pages</label>
+          <input type="number" class="form-control" id="new-book-pages" />
+        </div>
+        <div class="mb-3">
+          <div class="form-check-inline">
+            <input
+              type="radio"
+              class="form-check-input"
+              name="hasBeenRead"
+              id="hasBeenRead"
+            />
+            <label for="hasBeenRead" class="form-check-label"
+              >Has been read</label
+            >
+          </div>
+          <div class="form-check-inline">
+            <input
+              type="radio"
+              class="form-check-input"
+              name="hasBeenRead"
+              id="notBeenRead"
+            />
+            <label for="notBeenRead" class="form-check-label"
+              >Has not been read</label
+            >
+          </div>
+        </div>
+      </form>
       <div class="container text-center">
         <button id="new-book-btn" type="button" class="btn btn-success">
           Add New Book
         </button>
       </div>
     </main>
-    <footer class="container-fluid">
-      <p class="text-center">Made by Craig Shields for The Odin Project.</p>
+    <footer class="container-fluid mt-3 text-center">
+      <p>Made by Craig Shields for The Odin Project.</p>
     </footer>
   </body>
 </html>

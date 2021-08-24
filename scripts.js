@@ -1,4 +1,25 @@
-let myLibrary = [];
+let myLibrary = [
+  {
+    title: "The Children of Men",
+    author: "PD James",
+    pages: 241,
+    hasBeenRead: false,
+  },
+  {
+    title: "Think like a Programmer",
+    author: "V. Anton Spraul",
+    pages: 233,
+    hasBeenRead: false,
+  },
+  {
+    title: "DRIL",
+    author: "WINT",
+    pages: 417,
+    hasBeenRead: true,
+  },
+];
+
+displayBooks();
 
 const newBookBtn = document.querySelector("#new-book-btn");
 const form = document.querySelector("form");
@@ -28,7 +49,6 @@ function addBookToLibrary() {
   newBook.pages = +prompt("Number of pages");
   newBook.hasBeenRead = prompt("Has it been read? (yes/no)") === "yes";
   myLibrary.push(newBook);
-  newBook.id = myLibrary.indexOf(newBook);
   displayBooks();
 }
 
@@ -42,6 +62,7 @@ function displayBooks() {
   myLibrary.forEach((book) => {
     const card = document.createElement("div");
     card.classList.add("card", "mx-auto", "my-3");
+    card.setAttribute("data-id", `${myLibrary.indexOf(book)}`);
 
     const cardHeader = document.createElement("h5");
     cardHeader.classList.add("card-header");
@@ -52,7 +73,7 @@ function displayBooks() {
 
     const bookAuthor = document.createElement("h6");
     bookAuthor.classList.add("card-subtitle");
-    bookAuthor.textContent = `${book.author} (author)`;
+    bookAuthor.textContent = book.author;
 
     const bookInfo = document.createElement("p");
     bookInfo.classList.add("card-text");
@@ -62,10 +83,10 @@ function displayBooks() {
 
     const bookRemoveBtn = document.createElement("button");
     bookRemoveBtn.classList.add("btn", "btn-sm", "btn-outline-danger");
-    bookRemoveBtn.addEventListener("click", () => {
-      // find book with this id
-      // remove book
-      // update display
+    bookRemoveBtn.addEventListener("click", function removeBook() {
+      const bookToRemove = this.parentElement.parentElement.dataset.id;
+      myLibrary.splice(bookToRemove, 1);
+      displayBooks();
     });
     bookRemoveBtn.textContent = "Remove from Library";
 

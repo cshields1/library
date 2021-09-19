@@ -1,25 +1,4 @@
-let myLibrary = [
-  {
-    title: "The Children of Men",
-    author: "PD James",
-    pages: 241,
-    hasBeenRead: false,
-  },
-  {
-    title: "Think like a Programmer",
-    author: "V. Anton Spraul",
-    pages: 233,
-    hasBeenRead: false,
-  },
-  {
-    title: "DRIL",
-    author: "WINT",
-    pages: 417,
-    hasBeenRead: true,
-  },
-];
-
-displayBooks();
+let myLibrary = [];
 
 function Book(title, author, pages, hasBeenRead) {
   this.title = title;
@@ -28,13 +7,9 @@ function Book(title, author, pages, hasBeenRead) {
   this.hasBeenRead = hasBeenRead;
 }
 
-Book.prototype.toggleRead = function () {
-  console.dir(this);
-};
-
 const newBookBtn = document.querySelector("#new-book-btn");
-const form = document.querySelector("form");
 const cancelBtn = document.querySelector("#cancel-btn");
+const form = document.querySelector("form");
 
 newBookBtn.addEventListener("click", () => {
   newBookBtn.setAttribute("hidden", "");
@@ -42,16 +17,32 @@ newBookBtn.addEventListener("click", () => {
 });
 
 cancelBtn.addEventListener("click", () => {
-  form.setAttribute("hidden", "");
-  newBookBtn.removeAttribute("hidden");
+  hideForm();
 });
 
+form.addEventListener(
+  "submit",
+  (e) => {
+    e.preventDefault();
+    addBookToLibrary();
+    resetForm();
+    hideForm();
+  },
+  false
+);
+
+function hideForm() {
+  form.setAttribute("hidden", "");
+  newBookBtn.removeAttribute("hidden");
+}
+
 function addBookToLibrary() {
-  const newBook = Object.create(Book.prototype);
-  newBook.title = prompt("Title of book");
-  newBook.author = prompt("Author of book");
-  newBook.pages = +prompt("Number of pages");
-  newBook.hasBeenRead = prompt("Has it been read? (yes/no)") === "yes";
+  const newBook = new Book(
+    form.title.value,
+    form.author.value,
+    form.pages.value,
+    form.hasBeenRead.value === "yes" ? true : false
+  );
   myLibrary.push(newBook);
   displayBooks();
 }
@@ -86,7 +77,9 @@ function displayBooks() {
 
     const bookPages = document.createElement("p");
     bookPages.classList.add("card-text", "my-2");
-    bookPages.textContent = `${book.pages} pages`;
+    bookPages.textContent = book.pages
+      ? `${book.pages} pages`
+      : "Unknown Length";
 
     const readStatus = document.createElement("p");
     readStatus.classList.add("card-text", "my-2");
@@ -96,17 +89,17 @@ function displayBooks() {
     const btnsDiv = document.createElement("div");
     btnsDiv.classList.add("col", "d-sm-flex");
 
-    const hasReadBtn = document.createElement("button");
-    hasReadBtn.classList.add("btn", "btn-sm", "btn-outline-primary");
-    hasReadBtn.setAttribute("data-id", myLibrary.indexOf(book));
-    hasReadBtn.addEventListener("click", function () {
+    const toggleReadBtn = document.createElement("button");
+    toggleReadBtn.classList.add("btn", "btn-sm", "btn-outline-primary");
+    toggleReadBtn.setAttribute("data-id", myLibrary.indexOf(book));
+    toggleReadBtn.addEventListener("click", function () {
       const thisBook = myLibrary[this.getAttribute("data-id")];
       thisBook.hasBeenRead
         ? (thisBook.hasBeenRead = false)
         : (thisBook.hasBeenRead = true);
       readStatus.textContent = `${!book.hasBeenRead ? "Unread." : "Read."}`;
     });
-    hasReadBtn.textContent = "Read/Unread";
+    toggleReadBtn.textContent = "Read/Unread";
 
     const bookRemoveBtn = document.createElement("button");
     bookRemoveBtn.classList.add("btn", "btn-sm", "btn-outline-danger");
@@ -119,15 +112,17 @@ function displayBooks() {
     bookRemoveBtn.textContent = "Remove";
 
     authorInfoDiv.append(bookAuthor, bookPages, readStatus);
-
-    btnsDiv.append(hasReadBtn, bookRemoveBtn);
-
+    btnsDiv.append(toggleReadBtn, bookRemoveBtn);
     cardBodyDiv.append(authorInfoDiv, btnsDiv);
-
     cardBody.append(cardBodyDiv);
-
     card.append(cardHeader, cardBody);
-
     display.append(card);
   });
+}
+
+function resetForm() {
+  form.title.value = "";
+  form.author.value = "";
+  form.pages.value = "";
+  form.hasBeenRead.value = "yes";
 }

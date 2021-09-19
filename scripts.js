@@ -21,6 +21,17 @@ let myLibrary = [
 
 displayBooks();
 
+function Book(title, author, pages, hasBeenRead) {
+  this.title = title;
+  this.author = author;
+  this.pages = pages;
+  this.hasBeenRead = hasBeenRead;
+}
+
+Book.prototype.toggleRead = function () {
+  console.dir(this);
+};
+
 const newBookBtn = document.querySelector("#new-book-btn");
 const form = document.querySelector("form");
 const cancelBtn = document.querySelector("#cancel-btn");
@@ -34,13 +45,6 @@ cancelBtn.addEventListener("click", () => {
   form.setAttribute("hidden", "");
   newBookBtn.removeAttribute("hidden");
 });
-
-function Book(title, author, pages, hasBeenRead) {
-  this.title = title;
-  this.author = author;
-  this.pages = pages;
-  this.hasBeenRead = hasBeenRead;
-}
 
 function addBookToLibrary() {
   const newBook = Object.create(Book.prototype);
@@ -62,7 +66,6 @@ function displayBooks() {
   myLibrary.forEach((book) => {
     const card = document.createElement("div");
     card.classList.add("card", "mx-auto", "my-3");
-    card.setAttribute("data-id", `${myLibrary.indexOf(book)}`);
 
     const cardHeader = document.createElement("h5");
     cardHeader.classList.add("card-header");
@@ -71,26 +74,57 @@ function displayBooks() {
     const cardBody = document.createElement("div");
     cardBody.classList.add("card-body");
 
+    const cardBodyDiv = document.createElement("div");
+    cardBodyDiv.classList.add("row");
+
+    const authorInfoDiv = document.createElement("div");
+    authorInfoDiv.classList.add("col");
+
     const bookAuthor = document.createElement("h6");
-    bookAuthor.classList.add("card-subtitle");
+    bookAuthor.classList.add("card-subtitle", "my-1");
     bookAuthor.textContent = book.author;
 
-    const bookInfo = document.createElement("p");
-    bookInfo.classList.add("card-text");
-    bookInfo.textContent = `${book.pages} pages long; ${
-      book.hasBeenRead ? "has been read" : "has not been read"
-    }.`;
+    const bookPages = document.createElement("p");
+    bookPages.classList.add("card-text", "my-2");
+    bookPages.textContent = `${book.pages} pages`;
+
+    const readStatus = document.createElement("p");
+    readStatus.classList.add("card-text", "my-2");
+    readStatus.setAttribute("data-id", myLibrary.indexOf(book));
+    readStatus.textContent = `${book.hasBeenRead ? "Read." : "Unread."}`;
+
+    const btnsDiv = document.createElement("div");
+    btnsDiv.classList.add("col", "d-sm-flex");
+
+    const hasReadBtn = document.createElement("button");
+    hasReadBtn.classList.add("btn", "btn-sm", "btn-outline-primary");
+    hasReadBtn.setAttribute("data-id", myLibrary.indexOf(book));
+    hasReadBtn.addEventListener("click", function () {
+      const thisBook = myLibrary[this.getAttribute("data-id")];
+      thisBook.hasBeenRead
+        ? (thisBook.hasBeenRead = false)
+        : (thisBook.hasBeenRead = true);
+      readStatus.textContent = `${!book.hasBeenRead ? "Unread." : "Read."}`;
+    });
+    hasReadBtn.textContent = "Read/Unread";
 
     const bookRemoveBtn = document.createElement("button");
     bookRemoveBtn.classList.add("btn", "btn-sm", "btn-outline-danger");
-    bookRemoveBtn.addEventListener("click", function removeBook() {
-      const bookToRemove = this.parentElement.parentElement.dataset.id;
-      myLibrary.splice(bookToRemove, 1);
+    bookRemoveBtn.setAttribute("data-id", myLibrary.indexOf(book));
+    bookRemoveBtn.addEventListener("click", function () {
+      const bookIndex = this.getAttribute("data-id");
+      myLibrary.splice(bookIndex, 1);
       displayBooks();
     });
-    bookRemoveBtn.textContent = "Remove from Library";
+    bookRemoveBtn.textContent = "Remove";
 
-    cardBody.append(bookAuthor, bookInfo, bookRemoveBtn);
+    authorInfoDiv.append(bookAuthor, bookPages, readStatus);
+
+    btnsDiv.append(hasReadBtn, bookRemoveBtn);
+
+    cardBodyDiv.append(authorInfoDiv, btnsDiv);
+
+    cardBody.append(cardBodyDiv);
 
     card.append(cardHeader, cardBody);
 
